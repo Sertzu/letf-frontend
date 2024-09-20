@@ -131,7 +131,7 @@ export default function CalculatorPage() {
 
       try {
         const response = await axios.get<ApiResponse[]>(
-          `http://172.27.133.114:5000/api/data?start=${formattedStartDate}&end=${formattedEndDate}`
+          `http://localhost:5000/api/data?start=${formattedStartDate}&end=${formattedEndDate}`
         );
         setFetchedData(response.data);
       } catch (error) {
