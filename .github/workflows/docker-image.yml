@@ -7,12 +7,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build:
-
+  build_and_publish:
     runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag letf-frontend:prod
+    steps: 
+      - uses: actions/checkout@v3
+      - name: Build and push the image
+        run : |
+          docker login --username sertzu --password ${{ secrets.GH_PAT }} ghcr.io
+          docker build . --tag ghcr.io/sertzu/letf-frontend:prod
+          docker push ghcr.io/sertzu/letf-frontend:prod
