@@ -17,6 +17,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Heiliger Amumbo</title>
+        <script defer data-domain="heiliger-amumbo.org" src="https://analytics.heiliger-amumbo.org/js/script.js"></script>
         <Meta />
         <Links />
       </head>
