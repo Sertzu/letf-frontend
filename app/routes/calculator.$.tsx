@@ -131,7 +131,7 @@ export default function CalculatorPage() {
 
       try {
         const response = await axios.get<ApiResponse[]>(
-          `http://localhost:5000/api/data?start=${formattedStartDate}&end=${formattedEndDate}`
+          `https://api.heiliger-amumbo.org/api/data?start=${formattedStartDate}&end=${formattedEndDate}`
         );
         setFetchedData(response.data);
       } catch (error) {
