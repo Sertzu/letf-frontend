@@ -152,7 +152,7 @@ export default function CalculatorPage() {
       monthlyContributions
     );
   
-    if (calculatedData.length > 3000) {
+    if (calculatedData.length > 1500) {
       const samplingInterval = Math.ceil(calculatedData.length / 1000);
       const downsampledData = calculatedData.filter(
         (_, index) => index % samplingInterval === 0

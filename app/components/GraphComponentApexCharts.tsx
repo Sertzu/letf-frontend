@@ -122,7 +122,11 @@ export default function GraphComponent({ data, logScale }: { data: ChartData[], 
           autoScaleYaxis: true
         },
         toolbar: {
-          autoSelected: 'zoom'
+          autoSelected: 'zoom',
+          show: true,
+          tools: {
+            download: false, // Disable default download button
+          },
         },
         animations: {
           enabled: true // Disable animations for smoother resizing
