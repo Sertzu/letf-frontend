@@ -4,7 +4,7 @@ import { ChartData } from "../components/GraphComponentUPlot";
 import { Switch } from "../components/ui/switch";
 import axios from "axios";
 import type { MetaFunction } from "@remix-run/node";
-import { useFunSwitch } from '../lib/SwitchContext';
+import { useFunSwitch } from "../lib/SwitchContext";
 
 const GraphComponent = lazy(() => import("../components/GraphComponentUPlot"));
 
@@ -144,11 +144,7 @@ export default function CalculatorPage() {
 
   // Recalculate chart data when amounts or fetched data change
   useEffect(() => {
-    if (
-      !fetchedData.length ||
-      startingAmount <= 0 ||
-      monthlyContributions <= 0
-    )
+    if (!fetchedData.length || startingAmount <= 0 || monthlyContributions <= 0)
       return;
 
     const calculatedData = calculateData(
@@ -230,16 +226,26 @@ export default function CalculatorPage() {
                 />
               </div>
               <div className="flex flex-col items-center">
-                <Switch checked={isLogScale} onCheckedChange={() => toggleLogScale(prev => !prev)}/>
+                <Switch
+                  checked={isLogScale}
+                  onCheckedChange={() => toggleLogScale((prev) => !prev)}
+                />
                 <span>Log Skala</span>
               </div>
             </div>
-            <div className="w-full h-full pt-5 pb-8">
-              <Suspense fallback={<div>Loading graph...</div>}>
-                <GraphComponent data={memoizedData} logScale={isLogScale} />
-              </Suspense>
-            </div>
           </CardContent>
+        </Card>
+        <Card className="w-full max-w-7xl p-3 bg-white bg-opacity-40 shadow-lg backdrop-blur-lg pb-20 lg:pb-10">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">
+              📈 📈 📈
+            </CardTitle>
+          </CardHeader>
+          <div className="w-full h-full pt-5 pb-8">
+            <Suspense fallback={<div>Loading graph...</div>}>
+              <GraphComponent data={memoizedData} logScale={isLogScale} />
+            </Suspense>
+          </div>
         </Card>
       </div>
     </>
