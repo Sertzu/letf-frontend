@@ -1,10 +1,8 @@
-'use client'
-
-import { useEffect, useState, useRef } from "react";
-import uPlot from "uplot";
-import UplotReact from "uplot-react";
-import "uplot/dist/uPlot.min.css";
+import { useEffect, useState, useRef, Suspense, lazy } from "react";
+//import ReactApexChart from 'react-apexcharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
+
+const ReactApexChart = lazy(() => import('react-apexcharts'));
 
 export interface ChartComponentProps {
   data: ChartData[];
@@ -46,7 +44,7 @@ export default function GraphComponent({ data, logScale }: { data: ChartData[], 
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [minValue, setMinValue] = useState<number>(0);
   const [maxValue, setMaxValue] = useState<number>(0);
-  const [options, setOptions] = useState<uPlot.Options | null>(null);
+  const [options, setOptions] = useState<any | null>(null);
   const [chartData, setChartData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -78,116 +76,113 @@ export default function GraphComponent({ data, logScale }: { data: ChartData[], 
 
     setLoading(true);
 
-    const dayValues = data.map((d) => Math.floor(new Date(d.day).getTime() / 1000));
-    //console.log(`${dayValues}`)
-    const noLeverageValues = data.map((d) => Math.floor(d.no_leverage));
-    const twoXLeverageValues = data.map((d) => Math.floor(d.two_x_leverage));
-    const totalInvestedValues = data.map((d) => Math.floor(d.total_invested));
-    const smaStrategyValues = data.map((d) => Math.floor(d.SMA_Strategy));
-    const smaStrategyFundValues = data.map((d) => Math.floor(d.SMA_Strategy_With_Funds));
-
-    const fmtVal = (u, v, sidx, didx) => (
-      didx == null ? '--' :
-      v    == null ?   '' :
-                     v + " €"
-    );
-
-    const options: uPlot.Options = {
-      title: "",
-      width: chartRef.current?.offsetWidth || 800,
-      height: chartRef.current?.offsetHeight || 400,
-      series: [
-        {},
-        {
-          label: chartConfig.total_investment.label,
-          stroke: chartConfig.total_investment.color,
-          width: 2,
-          value: fmtVal,
-        },
-        {
-          label: chartConfig.no_leverage.label,
-          stroke: chartConfig.no_leverage.color,
-          width: 2,
-          value: fmtVal,
-        },
-        {
-          label: chartConfig.two_x_leverage.label,
-          stroke: chartConfig.two_x_leverage.color,
-          width: 2,
-          value: fmtVal,
-        },
-        {
-          label: chartConfig.SMA_strategy.label,
-          stroke: chartConfig.SMA_strategy.color,
-          width: 2,
-          value: fmtVal,
-        },
-        {
-          label: chartConfig.SMA_strategy_with_funds.label,
-          stroke: chartConfig.SMA_strategy_with_funds.color,
-          width: 2,
-          value: fmtVal,
-        },
-      ],
-      axes: [
-        {
-          stroke: "#000",
-          grid: { show: true },
-          scale: "x",
-        },
-        {
-          stroke: "#000",
-          scale: "y",
-          grid: { show: true },
-          values: (u, vals) => vals.map(v => Math.round(v) ? Math.round(v) + " €" : "" )
-        },
-      ],
-      scales: {
-        y: {
-          range: [minValue * 0.9, maxValue * 1.1],
-          distr: logScale ? 3 : 1, // Logarithmic scale
-        },
+    // Prepare the data for ApexCharts
+    const series = [
+      {
+        name: chartConfig.total_investment.label,
+        data: data.map((d) => [new Date(d.day).getTime(), d.total_invested])
       },
-      padding: [10, 10, 10, 60],
-      cursor: {
-        drag: {
-          x: false, // Disable drag/zoom on x-axis
-          y: false, // Disable drag/zoom on y-axis
-        },
+      {
+        name: chartConfig.no_leverage.label,
+        data: data.map((d) => [new Date(d.day).getTime(), d.no_leverage])
       },
-    };
+      {
+        name: chartConfig.two_x_leverage.label,
+        data: data.map((d) => [new Date(d.day).getTime(), d.two_x_leverage])
+      },
+      {
+        name: chartConfig.SMA_strategy.label,
+        data: data.map((d) => [new Date(d.day).getTime(), d.SMA_Strategy])
+      },
+      {
+        name: chartConfig.SMA_strategy_with_funds.label,
+        data: data.map((d) => [new Date(d.day).getTime(), d.SMA_Strategy_With_Funds])
+      }
+    ];
 
-    setOptions(options);
-    setChartData([
-      dayValues,
-      totalInvestedValues,
-      noLeverageValues,
-      twoXLeverageValues,
-      smaStrategyValues,
-      smaStrategyFundValues,
-    ]);
-
-    setLoading(false);
-  }, [data, minValue, maxValue, logScale]);
-
-  // Handle resizing of the chart
-  useEffect(() => {
-    const handleResize = () => {
-      if (chartRef.current) {
-        setOptions((prevOptions) => ({
-          ...prevOptions,
-          width: chartRef.current?.offsetWidth || 800,
-          height: chartRef.current?.offsetHeight || 400,
-        }));
+    // Helper function to format numbers
+    const formatNumber = (value) => {
+      if (value >= 1e9) {
+        return (value / 1e9).toFixed(1).replace(/\.0$/, '') + 'B €';
+      } else if (value >= 1e6) {
+        return (value / 1e6).toFixed(1).replace(/\.0$/, '') + 'M €';
+      } else if (value >= 1e3) {
+        return (value / 1e3).toFixed(1).replace(/\.0$/, '') + 'k €';
+      } else {
+        return Math.round(value) + ' €';
       }
     };
 
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
+    const options = {
+      chart: {
+        type: 'line',
+        zoom: {
+          enabled: true,
+          type: 'x',
+          autoScaleYaxis: true
+        },
+        toolbar: {
+          autoSelected: 'zoom'
+        },
+        animations: {
+          enabled: true // Disable animations for smoother resizing
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'straight',
+        width: 2
+      },
+      xaxis: {
+        type: 'datetime'
+      },
+      yaxis: {
+        labels: {
+          formatter: function (value) {
+            return formatNumber(value);
+          }
+        },
+        logarithmic: logScale,
+        min: minValue * 0.9,
+        max: maxValue * 1.1
+      },
+      tooltip: {
+        shared: false,
+        x: {
+          format: 'dd MMM yyyy'
+        },
+        y: {
+          formatter: function (value) {
+            return formatNumber(value);
+          }
+        }
+      },
+      colors: [
+        chartConfig.total_investment.color,
+        chartConfig.no_leverage.color,
+        chartConfig.two_x_leverage.color,
+        chartConfig.SMA_strategy.color,
+        chartConfig.SMA_strategy_with_funds.color
+      ],
+      responsive: [
+        {
+          breakpoint: 768, // Example breakpoint for mobile devices
+          options: {
+            chart: {
+              height: 300
+            }
+          }
+        }
+      ]
     };
-  }, []);
+
+    setOptions(options);
+    setChartData(series);
+    setLoading(false);
+
+  }, [data, logScale, minValue, maxValue]);
 
   return (
     <ChartContainer config={chartConfig}>
@@ -226,9 +221,12 @@ export default function GraphComponent({ data, logScale }: { data: ChartData[], 
           </div>
         ) : (
           options && (
-            <UplotReact
+            <ReactApexChart
               options={options}
-              data={chartData}
+              series={chartData}
+              type="line"
+              height="100%"
+              width="100%"
             />
           )
         )}

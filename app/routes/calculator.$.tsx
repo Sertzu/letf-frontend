@@ -1,12 +1,11 @@
 import { useEffect, useState, useMemo, Suspense, lazy } from "react";
 import { DatePicker } from "../components/DatePicker";
-import { ChartData } from "../components/GraphComponentUPlot";
+import { ChartData } from "../components/GraphComponentApexCharts";
 import { Switch } from "../components/ui/switch";
 import axios from "axios";
 import type { MetaFunction } from "@remix-run/node";
-import { useFunSwitch } from "../lib/SwitchContext";
 
-const GraphComponent = lazy(() => import("../components/GraphComponentUPlot"));
+const GraphComponent = lazy(() => import("../components/GraphComponentApexCharts"));
 
 import {
   Card,
@@ -146,13 +145,22 @@ export default function CalculatorPage() {
   useEffect(() => {
     if (!fetchedData.length || startingAmount <= 0 || monthlyContributions <= 0)
       return;
-
+  
     const calculatedData = calculateData(
       fetchedData,
       startingAmount,
       monthlyContributions
     );
-    setFilteredData(calculatedData);
+  
+    if (calculatedData.length > 3000) {
+      const samplingInterval = Math.ceil(calculatedData.length / 1000);
+      const downsampledData = calculatedData.filter(
+        (_, index) => index % samplingInterval === 0
+      );
+      setFilteredData(downsampledData);
+    } else {
+      setFilteredData(calculatedData);
+    }
   }, [fetchedData, startingAmount, monthlyContributions]);
 
   return (
