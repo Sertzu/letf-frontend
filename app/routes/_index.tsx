@@ -17,6 +17,13 @@ const LandingPage = () => {
         <CardContent>
           <div className="space-y-4 p-5">
             <div>
+              <h3 className="text-lg font-semibold">Was ist der Heilige Amumbo?</h3>
+              <p className="text-gray-700">
+                Der Heilige Amumbo ist der Amundi ETF Leveraged MSCI USA Daily (WKN A0X8ZS), welcher seinen Jüngern Kraft und Leben (Erträge und Lambo) spendet.
+                So wie Jesus das Wasser in Wein verwandelte, verwandelt der Heilige Amumbo jedes Investment in pure Rendite – und seine Gläubigen folgen ihm, getragen von der Hoffnung, dass sich das gelobte Land des ewigen Reichtums vor ihnen auftut, wo der Privatjet wartet und die Erträge ins Unendliche wachsen.
+              </p>
+            </div>
+            <div>
               <h3 className="text-lg font-semibold">
                 ZahlGrafs Exzellente Abenteuer?
               </h3>
@@ -42,7 +49,7 @@ const LandingPage = () => {
               <p className="text-gray-700">
                 Eine detaillierte Beschreibung ist wieder beim Zahlgraf
                 nachzulesen. Aber um es kurz zu machen: Wir kaufen 2x gehebelten
-                S&P 500, wenn der Kurs des
+                S&P 500 (Heiliger Amumbo), wenn der Kurs des
                 <strong> ungehebelten</strong> S&P 500 ETFs über dem 200-Tage
                 Simple Moving Average ist und halten Cash, wenn der Kurs unter
                 diesem liegt.
@@ -56,8 +63,9 @@ const LandingPage = () => {
               <p className="text-gray-700">
                 Im Rechner-Tab oben links kannst du selbst mit verschiedenen
                 Ausgangswerten herumspielen. Zurzeit gibt es Anfangs- und
-                Enddatum, sowie Investment-Summe und monatlichen Sparplan. 
-                Verglichen wird die Strategie mit dem 2x gehebelten ohne Strategie und dem Basis ETF.
+                Enddatum, sowie Investment-Summe und monatlichen Sparplan.
+                Verglichen wird die Strategie mit dem 2x gehebelten ohne
+                Strategie und dem Basis ETF.
                 <br />
                 {
                   "Weitere Features können gerne angefragt werden. Am besten schreibst du mir direkt auf "
@@ -83,7 +91,9 @@ const LandingPage = () => {
                 >
                   {"Salzamt"}
                 </a>
-                {" melden. Ich weiß, dass die Seite auf dem Handy nicht gut funktioniert und hab keinen Plan daran bald was zu ändern."}
+                {
+                  " melden. Ich weiß, dass die Seite auf dem Handy nicht gut funktioniert und hab keinen Plan daran bald was zu ändern."
+                }
               </p>
             </div>
 
@@ -117,7 +127,11 @@ const LandingPage = () => {
               <h3 className="text-lg font-semibold">
                 Was macht der M O N E Y Schalter?
               </h3>
-              <p className="text-gray-700">{"Finds heraus :) (Und schau was deine Maus mit den Objekten machen kann!)"}</p>
+              <p className="text-gray-700">
+                {
+                  "Finds heraus :) (Und schau was deine Maus mit den Objekten machen kann!)"
+                }
+              </p>
             </div>
           </div>
         </CardContent>
