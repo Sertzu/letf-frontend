@@ -113,10 +113,10 @@ export default function CalculatorPage() {
   const [startingAmount, setStartingAmount] = useState<number>(10000);
   const [monthlyContributions, setMonthlyContributions] = useState<number>(500);
   const [dateBegin, setDateBegin] = useState<Date | undefined>(
-    new Date(2001, 8, 11)
+    new Date(2000, 1, 1)
   );
   const [dateEnd, setDateEnd] = useState<Date | undefined>(
-    new Date(2021, 0, 6)
+    new Date(2024, 12, 12)
   );
   const memoizedData = useMemo(() => filteredData, [filteredData]);
 
@@ -131,6 +131,7 @@ export default function CalculatorPage() {
       try {
         const response = await axios.get<ApiResponse[]>(
           `https://api.heiliger-amumbo.org/api/data?start=${formattedStartDate}&end=${formattedEndDate}`
+          //`http://localhost:5000/api/data?start=${formattedStartDate}&end=${formattedEndDate}`
         );
         setFetchedData(response.data);
       } catch (error) {

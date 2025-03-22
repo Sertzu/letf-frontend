@@ -35,7 +35,7 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
           selected={date}
           onSelect={setDate}
           fromYear={1943}
-          toYear={2023}
+          toYear={2025}
         />
       </PopoverContent>
     </Popover>
