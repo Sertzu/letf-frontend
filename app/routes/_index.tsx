@@ -9,6 +9,20 @@ const LandingPage = () => {
   return (
     <div className="relative container mx-auto flex flex-col items-center justify-center space-y-4 pt-12 z-3">
       <Card className="w-full max-w-6xl p-5 bg-white bg-opacity-40 shadow-lg backdrop-blur-lg">
+      <CardHeader>
+          <CardTitle className="text-center text-2xl">
+            {"WICHTIGE MITTEILUNG:"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <img 
+              src="/amumbo-dark.webp" 
+              alt="Static" 
+              className="w-full md:w-1/2 object-cover mx-auto"
+            />
+        </CardContent>
+      </Card>
+      <Card className="w-full max-w-6xl p-5 bg-white bg-opacity-40 shadow-lg backdrop-blur-lg">
         <CardHeader>
           <CardTitle className="text-center text-2xl">
             {"Um was geht's hier?"}
