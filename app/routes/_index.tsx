@@ -8,7 +8,7 @@ import {
 const LandingPage = () => {
   return (
     <div className="relative container mx-auto flex flex-col items-center justify-center space-y-4 pt-12 z-3">
-      <Card className="w-full max-w-6xl p-5 bg-white bg-opacity-40 shadow-lg backdrop-blur-lg">
+      {/*<Card className="w-full max-w-6xl p-5 bg-white bg-opacity-40 shadow-lg backdrop-blur-lg">
       <CardHeader>
           <CardTitle className="text-center text-2xl">
             {"WICHTIGE MITTEILUNG:"}
@@ -22,6 +22,7 @@ const LandingPage = () => {
             />
         </CardContent>
       </Card>
+      */}
       <Card className="w-full max-w-6xl p-5 bg-white bg-opacity-40 shadow-lg backdrop-blur-lg">
         <CardHeader>
           <CardTitle className="text-center text-2xl">
